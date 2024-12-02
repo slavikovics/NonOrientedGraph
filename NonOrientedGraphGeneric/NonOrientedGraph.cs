@@ -43,6 +43,17 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
         return false;
     }
 
+    public Edge<T> FindEdge(T firstNode, T secondNode)
+    {
+        foreach (Edge<T> edge in _edges)
+        {
+            if (edge.FirstNode.Value.Equals(firstNode) && edge.SecondNode.Value.Equals(secondNode) ||
+                edge.SecondNode.Value.Equals(firstNode) && edge.FirstNode.Value.Equals(secondNode)) return edge;
+        }
+        
+        throw new ArgumentException("Edge not found");
+    }
+
     public int GetNodesCount()
     {
         return _nodes.Count;
@@ -60,27 +71,25 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 
         return node.Power;
     }
-
-    /// <summary>
-    /// Finds node by value, calculates it's power and returns power.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <returns>Node's power</returns>
-    /// <exception cref="ArgumentException"></exception>
+    
     public int GetNodePower(T node)
     {
         if (!HasNode(node)) throw new ArgumentException("Node is not present in graph");
         return CalculateNodePower(FindNode(node));
     }
 
-    /// <summary>
-    /// Adds new node to the graph.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <returns>
-    /// True if node was added
-    /// False if node can not be added
-    /// </returns>
+    private int CalculateEdgePower(Edge<T> edge)
+    {
+        edge.Power = CalculateNodePower(edge.FirstNode) + CalculateNodePower(edge.SecondNode);
+        return edge.Power;
+    }
+
+    public int GetEdgePower(T firstNode, T secondNode)
+    {
+        if (!HasEdge(firstNode, secondNode)) return -1;
+        return CalculateEdgePower(FindEdge(firstNode, secondNode));
+    }
+    
     public bool AddNode(T node)
     {
         if (HasNode(node)) return false;
@@ -89,21 +98,45 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
         _nodes.Add(newNode);
         return true;
     }
-
-    /// <summary>
-    /// Adds new nodes or node if they do not exist.
-    /// </summary>
-    /// <param name="firstNode"></param>
-    /// <param name="secondNode"></param>
-    /// <returns>
-    /// True if edge was created.
-    /// False if edge can not be created.
-    /// </returns>
+    
     public bool AddEdge(T firstNode, T secondNode)
     {
         Node<T> edgeNodeFirst;
         Node<T> edgeNodeSecond;
+
+        if (HasNode(firstNode)) edgeNodeFirst = FindNode(firstNode);
+        else edgeNodeFirst = new Node<T>(firstNode);
         
+        if (HasNode(secondNode)) edgeNodeSecond = FindNode(secondNode);
+        else edgeNodeSecond = new Node<T>(secondNode);
         
+        if (HasEdge(firstNode, secondNode)) return false;
+        
+        _edges.Add(new Edge<T>(edgeNodeFirst, edgeNodeSecond));
+        return true;
+    }
+
+    public void RemoveEdge(T firstNode, T secondNode)
+    {
+        if (!HasEdge(firstNode, secondNode)) return;
+        _edges.Remove(FindEdge(firstNode, secondNode));
+    }
+
+    public void RemoveEdgesForNode(T node)
+    {
+        for (int i = 0; i < _edges.Count; i++)
+        {
+            if (_edges[i].FirstNode.Value.Equals(node) || _edges[i].SecondNode.Value.Equals(node))
+            {
+                _edges.RemoveAt(i);
+                i--;
+            }
+        }
+    }
+
+    public void RemoveNode(T node)
+    {
+        RemoveNode(node);
+        RemoveEdgesForNode(node);
     }
 }
