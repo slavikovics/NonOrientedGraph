@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace NonOrientedGraphGeneric;
 
-public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
+public class NonOrientedGraph<T> : IEnumerable<T> where T : IEquatable<T>, IComparable<T>
 {
     private List<Node<T>> _nodes;
     
@@ -138,5 +140,15 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
     {
         RemoveNode(node);
         RemoveEdgesForNode(node);
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        return new BidirectionalEnumerator(_edges);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
