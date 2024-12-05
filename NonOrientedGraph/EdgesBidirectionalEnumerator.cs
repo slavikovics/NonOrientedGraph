@@ -2,16 +2,16 @@
 
 namespace NonOrientedGraphGeneric;
 
-public class BidirectionalEnumerator<T> : IEnumerator<T>
+public class EdgesBidirectionalEnumerator<T> : IEnumerator<Edge<T>>
 {
-    public List<T> Items { get; set; }
+    public List<Edge<T>> Items { get; set; }
 
-    public BidirectionalEnumerator(List<T> items)
+    public EdgesBidirectionalEnumerator(List<Edge<T>> items)
     {
         Items = items;
     }
     
-    public T Current => Items[_currentIndex];
+    public Edge<T> Current => Items[_currentIndex];
 
     private int _currentIndex = -1;
 

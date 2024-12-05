@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace NonOrientedGraphGeneric;
 
-public class NonOrientedGraph<T> : IEnumerable<T> where T : IEquatable<T>, IComparable<T>
+public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 {
     private List<Node<T>> _nodes;
     
@@ -142,13 +142,13 @@ public class NonOrientedGraph<T> : IEnumerable<T> where T : IEquatable<T>, IComp
         RemoveEdgesForNode(node);
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public IEnumerator<Edge<T>> GetEdgesEnumerator()
     {
-        return new BidirectionalEnumerator(_edges);
+        return new EdgesBidirectionalEnumerator<T>(_edges);
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
+    public IEnumerator<Node<T>> GetNodesEnumerator()
     {
-        return GetEnumerator();
+        return new NodesBidirectionalEnumerator<T>(_nodes);
     }
 }

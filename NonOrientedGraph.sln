@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35506.116 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonOrientedGraphGeneric", "NonOrientedGraphGeneric\NonOrientedGraphGeneric.csproj", "{C1BA0EC7-43B5-4846-A612-135A48E4E61E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonOrientedGraph", "NonOrientedGraph\NonOrientedGraph.csproj", "{C1BA0EC7-43B5-4846-A612-135A48E4E61E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonOrientedGraphTests", "NonOrientedGraphTests\NonOrientedGraphTests.csproj", "{F5E1052C-00C7-4A5B-8388-6409DBF853BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C1BA0EC7-43B5-4846-A612-135A48E4E61E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1BA0EC7-43B5-4846-A612-135A48E4E61E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1BA0EC7-43B5-4846-A612-135A48E4E61E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5E1052C-00C7-4A5B-8388-6409DBF853BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5E1052C-00C7-4A5B-8388-6409DBF853BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5E1052C-00C7-4A5B-8388-6409DBF853BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5E1052C-00C7-4A5B-8388-6409DBF853BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
