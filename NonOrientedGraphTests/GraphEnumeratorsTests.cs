@@ -1,7 +1,7 @@
 ﻿namespace NonOrientedGraphTests;
 
 [TestClass]
-public sealed class Test1
+public sealed class GraphEnumeratorsTests
 {
     [TestMethod]
     public void TestMethod1()
