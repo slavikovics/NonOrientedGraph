@@ -19,4 +19,9 @@ public class Edge<T>
         FirstNode = firstNode;
         SecondNode = secondNode;
     }
+
+    public override string ToString()
+    {
+        return $"{FirstNode} = {SecondNode}";
+    }
 }

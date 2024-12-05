@@ -4,19 +4,19 @@ namespace NonOrientedGraphGeneric;
 
 public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 {
-    private List<Node<T>> _nodes;
-    
-    private List<Edge<T>> _edges;
+    public List<Node<T>> Nodes { get; set; }
+
+    public List<Edge<T>> Edges { get; set; }
 
     public NonOrientedGraph()
     {
-        _nodes = new List<Node<T>>();
-        _edges = new List<Edge<T>>();
+        Nodes = new List<Node<T>>();
+        Edges = new List<Edge<T>>();
     }
 
     public bool HasNode(T node)
     {
-        foreach (Node<T> n in _nodes)
+        foreach (Node<T> n in Nodes)
         {
             if (n.Value.Equals(node)) return true;
         }
@@ -26,7 +26,7 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 
     private Node<T> FindNode(T node)
     {
-        foreach (Node<T> n in _nodes)
+        foreach (Node<T> n in Nodes)
         {
             if (n.Value.Equals(node)) return n;
         }
@@ -36,7 +36,7 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 
     public bool HasEdge(T firstNode, T secondNode)
     {
-        foreach (Edge<T> edge in _edges)
+        foreach (Edge<T> edge in Edges)
         {
             if (edge.FirstNode.Value.Equals(firstNode) && edge.SecondNode.Value.Equals(secondNode) ||
                 edge.SecondNode.Value.Equals(firstNode) && edge.FirstNode.Value.Equals(secondNode)) return true;    
@@ -47,7 +47,7 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 
     public Edge<T> FindEdge(T firstNode, T secondNode)
     {
-        foreach (Edge<T> edge in _edges)
+        foreach (Edge<T> edge in Edges)
         {
             if (edge.FirstNode.Value.Equals(firstNode) && edge.SecondNode.Value.Equals(secondNode) ||
                 edge.SecondNode.Value.Equals(firstNode) && edge.FirstNode.Value.Equals(secondNode)) return edge;
@@ -58,12 +58,12 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
 
     public int GetNodesCount()
     {
-        return _nodes.Count;
+        return Nodes.Count;
     }
 
     private int CalculateNodePower(Node<T> node)
     {
-        foreach (Edge<T> edge in _edges)
+        foreach (Edge<T> edge in Edges)
         {
             if (edge.FirstNode == node || edge.SecondNode == node)
             {
@@ -97,7 +97,7 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
         if (HasNode(node)) return false;
 
         Node<T> newNode = new Node<T>(node);
-        _nodes.Add(newNode);
+        Nodes.Add(newNode);
         return true;
     }
     
@@ -114,23 +114,23 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
         
         if (HasEdge(firstNode, secondNode)) return false;
         
-        _edges.Add(new Edge<T>(edgeNodeFirst, edgeNodeSecond));
+        Edges.Add(new Edge<T>(edgeNodeFirst, edgeNodeSecond));
         return true;
     }
 
     public void RemoveEdge(T firstNode, T secondNode)
     {
         if (!HasEdge(firstNode, secondNode)) return;
-        _edges.Remove(FindEdge(firstNode, secondNode));
+        Edges.Remove(FindEdge(firstNode, secondNode));
     }
 
     public void RemoveEdgesForNode(T node)
     {
-        for (int i = 0; i < _edges.Count; i++)
+        for (int i = 0; i < Edges.Count; i++)
         {
-            if (_edges[i].FirstNode.Value.Equals(node) || _edges[i].SecondNode.Value.Equals(node))
+            if (Edges[i].FirstNode.Value.Equals(node) || Edges[i].SecondNode.Value.Equals(node))
             {
-                _edges.RemoveAt(i);
+                Edges.RemoveAt(i);
                 i--;
             }
         }
@@ -142,13 +142,18 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
         RemoveEdgesForNode(node);
     }
 
-    public IEnumerator<Edge<T>> GetEdgesEnumerator()
+    public IEnumerator<Edge<T>> GetEnumerator()
     {
-        return new EdgesBidirectionalEnumerator<T>(_edges);
+        return new EdgesBidirectionalEnumerator<T>(Edges);
     }
 
-    public IEnumerator<Node<T>> GetNodesEnumerator()
+    public EdgesBidirectionalEnumerator<T> GetEdgesEnumerator()
     {
-        return new NodesBidirectionalEnumerator<T>(_nodes);
+        return new EdgesBidirectionalEnumerator<T>(Edges);
+    }
+
+    public NodesBidirectionalEnumerator<T> GetNodesEnumerator()
+    {
+        return new NodesBidirectionalEnumerator<T>(Nodes);
     }
 }
