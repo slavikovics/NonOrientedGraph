@@ -14,7 +14,8 @@ public sealed class GraphOperatorsTests
         Edge<int> edge2 = new Edge<int>(node1, node2);
         Assert.AreEqual(edge1, edge2);
         Assert.IsTrue(edge1.Equals(edge2));
-        Assert.IsFalse(edge1 == edge2);
+        Assert.IsTrue(edge1 == edge2);
+        Assert.IsFalse(edge1 != edge2);
     }
 
     [TestMethod]
@@ -25,6 +26,7 @@ public sealed class GraphOperatorsTests
         Assert.AreEqual(node1, node2);
         Assert.IsTrue(node1.Equals(node2));
         Assert.IsTrue(node1 == node2);
+        Assert.IsFalse(node1 != node2);
     }
 
     [TestMethod]

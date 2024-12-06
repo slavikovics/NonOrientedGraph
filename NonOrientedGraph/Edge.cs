@@ -31,4 +31,14 @@ public class Edge<T>
         if (obj is not Edge<T> edge) return false;
         return FirstNode.Equals(edge.FirstNode) && SecondNode.Equals(edge.SecondNode);
     }
+
+    public static bool operator ==(Edge<T> edge1, Edge<T> edge2)
+    {
+        return edge1.Equals(edge2);
+    }
+
+    public static bool operator !=(Edge<T> edge1, Edge<T> edge2)
+    {
+        return !(edge1 == edge2);
+    }
 }
