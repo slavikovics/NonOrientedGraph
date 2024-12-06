@@ -24,7 +24,7 @@ public sealed class GraphOperatorsTests
         Node<int> node2 = new Node<int>(1);
         Assert.AreEqual(node1, node2);
         Assert.IsTrue(node1.Equals(node2));
-        Assert.IsFalse(node1 == node2);
+        Assert.IsTrue(node1 == node2);
     }
 
     [TestMethod]

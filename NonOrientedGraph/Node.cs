@@ -17,4 +17,14 @@ public class Node<T>
         if (obj is not Node<T> node) return false;
         return node.Value.Equals(Value);
     }
+
+    public static bool operator ==(Node<T> a, Node<T> b)
+    {
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(Node<T> a, Node<T> b)
+    {
+        return !(a == b);
+    }
 }
