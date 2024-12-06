@@ -30,7 +30,7 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
         return false;
     }
 
-    private Node<T> FindNode(T node)
+    public Node<T> FindNode(T node)
     {
         foreach (Node<T> n in Nodes)
         {
@@ -69,6 +69,8 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
 
     private int CalculateNodePower(Node<T> node)
     {
+        node.Power = 0;
+        
         foreach (Edge<T> edge in Edges)
         {
             if (edge.FirstNode == node || edge.SecondNode == node)
@@ -88,6 +90,7 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
 
     private int CalculateEdgePower(Edge<T> edge)
     {
+        edge.Power = 0;
         edge.Power = CalculateNodePower(edge.FirstNode) + CalculateNodePower(edge.SecondNode);
         return edge.Power;
     }
@@ -113,14 +116,23 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
         Node<T> edgeNodeSecond;
 
         if (HasNode(firstNode)) edgeNodeFirst = FindNode(firstNode);
-        else edgeNodeFirst = new Node<T>(firstNode);
+        else
+        {
+            edgeNodeFirst = new Node<T>(firstNode);
+            Nodes.Add(edgeNodeFirst);
+        }
         
         if (HasNode(secondNode)) edgeNodeSecond = FindNode(secondNode);
-        else edgeNodeSecond = new Node<T>(secondNode);
+        else
+        {
+            edgeNodeSecond = new Node<T>(secondNode);
+            Nodes.Add(edgeNodeSecond);
+        }
         
         if (HasEdge(firstNode, secondNode)) return false;
         
         Edges.Add(new Edge<T>(edgeNodeFirst, edgeNodeSecond));
+        
         return true;
     }
 
@@ -144,7 +156,7 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
 
     public void RemoveNode(T node)
     {
-        RemoveNode(node);
+        Nodes.Remove(FindNode(node));
         RemoveEdgesForNode(node);
     }
 
@@ -159,8 +171,9 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
         Edges.Clear();
     }
 
-    private List<Node<T>> FindAdjacentNodes(Node<T> node)
+    public List<Node<T>> FindAdjacentNodes(T nodeValue)
     {
+        Node<T> node = FindNode(nodeValue);
         List<Node<T>> adjacentNodes = new List<Node<T>>();
         
         foreach (Edge<T> edge in Edges)
@@ -172,8 +185,9 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
         return adjacentNodes;
     }
 
-    private List<Edge<T>> FindIncidentEdges(Node<T> node)
+    public List<Edge<T>> FindIncidentEdges(T nodeValue)
     {
+        Node<T> node = FindNode(nodeValue);
         List<Edge<T>> incidentEdges = new List<Edge<T>>();
 
         foreach (Edge<T> edge in Edges)
@@ -200,13 +214,13 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
         return new NodesBidirectionalEnumerator<T>(Nodes);
     }
 
-    public NodesBidirectionalEnumerator<T> GetAdjacentNodesEnumerator(Node<T> node)
+    public NodesBidirectionalEnumerator<T> GetAdjacentNodesEnumerator(T node)
     {
         List<Node<T>> nodes = FindAdjacentNodes(node);
         return new NodesBidirectionalEnumerator<T>(nodes);
     }
 
-    public EdgesBidirectionalEnumerator<T> GetIncidentEdgesEnumerator(Node<T> node)
+    public EdgesBidirectionalEnumerator<T> GetIncidentEdgesEnumerator(T node)
     {
         List<Edge<T>> incidentEdges = FindIncidentEdges(node);
         return new EdgesBidirectionalEnumerator<T>(incidentEdges);

@@ -29,7 +29,7 @@ public class Edge<T>
     {
         if (obj == null) return false;
         if (obj is not Edge<T> edge) return false;
-        return FirstNode.Equals(edge.FirstNode) && SecondNode.Equals(edge.SecondNode);
+        return (FirstNode.Equals(edge.FirstNode) && SecondNode.Equals(edge.SecondNode)) || (SecondNode.Equals(edge.FirstNode) && FirstNode.Equals(edge.SecondNode));
     }
 
     public static bool operator ==(Edge<T> edge1, Edge<T> edge2)
