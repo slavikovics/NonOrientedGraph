@@ -215,6 +215,7 @@ public sealed class GraphMethodsTests
 
         List<Node<int>> nodes = graph.FindAdjacentNodes(0);
         Assert.AreEqual(nodes.Count, 2);
-        Assert.IsTrue(nodes.Contains(n => n.Value == 1));
+        Assert.IsTrue(nodes.Contains(new Node<int>(1)));
+        Assert.IsTrue(nodes.Contains(new Node<int>(2)));
     }
 }
