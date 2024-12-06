@@ -24,4 +24,11 @@ public class Edge<T>
     {
         return $"{FirstNode} = {SecondNode}";
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not Edge<T> edge) return false;
+        return FirstNode.Equals(edge.FirstNode) && SecondNode.Equals(edge.SecondNode);
+    }
 }

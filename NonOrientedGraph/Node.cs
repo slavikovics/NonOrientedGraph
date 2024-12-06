@@ -10,4 +10,11 @@ public class Node<T>
     {
         Value = value;
     }
+    
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not Node<T> node) return false;
+        return node.Value.Equals(Value);
+    }
 }
