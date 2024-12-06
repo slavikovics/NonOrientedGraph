@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace NonOrientedGraphGeneric;
 
-public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
+public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IEquatable<T>, IComparable<T>
 {
     public List<Node<T>> Nodes { get; set; }
 
@@ -12,6 +12,12 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
     {
         Nodes = new List<Node<T>>();
         Edges = new List<Edge<T>>();
+    }
+
+    public NonOrientedGraph(NonOrientedGraph<T> graph)
+    {
+        Nodes = graph.Nodes;
+        Edges = graph.Edges;
     }
 
     public bool HasNode(T node)
@@ -142,6 +148,43 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
         RemoveEdgesForNode(node);
     }
 
+    public bool IsEmpty()
+    {
+        return Nodes.Count == 0;
+    }
+
+    public void Clear()
+    {
+        Nodes.Clear();
+        Edges.Clear();
+    }
+
+    private List<Node<T>> FindAdjacentNodes(Node<T> node)
+    {
+        List<Node<T>> adjacentNodes = new List<Node<T>>();
+        
+        foreach (Edge<T> edge in Edges)
+        {
+            if (edge.FirstNode.Value.Equals(node.Value)) adjacentNodes.Add(edge.SecondNode);
+            else if (edge.SecondNode.Value.Equals(node.Value)) adjacentNodes.Add(edge.FirstNode);
+        }
+        
+        return adjacentNodes;
+    }
+
+    private List<Edge<T>> FindIncidentEdges(Node<T> node)
+    {
+        List<Edge<T>> incidentEdges = new List<Edge<T>>();
+
+        foreach (Edge<T> edge in Edges)
+        {
+            if (edge.FirstNode.Value.Equals(node.Value)) incidentEdges.Add(edge);
+            else if (edge.SecondNode.Value.Equals(node.Value)) incidentEdges.Add(edge);
+        }
+        
+        return incidentEdges;
+    }
+
     public IEnumerator<Edge<T>> GetEnumerator()
     {
         return new EdgesBidirectionalEnumerator<T>(Edges);
@@ -155,5 +198,66 @@ public class NonOrientedGraph<T> where T : IEquatable<T>, IComparable<T>
     public NodesBidirectionalEnumerator<T> GetNodesEnumerator()
     {
         return new NodesBidirectionalEnumerator<T>(Nodes);
+    }
+
+    public NodesBidirectionalEnumerator<T> GetAdjacentNodesEnumerator(Node<T> node)
+    {
+        List<Node<T>> nodes = FindAdjacentNodes(node);
+        return new NodesBidirectionalEnumerator<T>(nodes);
+    }
+
+    public EdgesBidirectionalEnumerator<T> GetIncidentEdgesEnumerator(Node<T> node)
+    {
+        List<Edge<T>> incidentEdges = FindIncidentEdges(node);
+        return new EdgesBidirectionalEnumerator<T>(incidentEdges);
+    }
+
+    public static bool operator ==(NonOrientedGraph<T> firstGraph, NonOrientedGraph<T> secondGraph)
+    {
+        if (firstGraph.Nodes.SequenceEqual(secondGraph.Nodes) && firstGraph.Edges.SequenceEqual(secondGraph.Edges)) return true;
+        return false;
+    }
+
+    public static bool operator !=(NonOrientedGraph<T> firstGraph, NonOrientedGraph<T> secondGraph)
+    {
+        return !(firstGraph == secondGraph);
+    }
+
+    public static bool operator <(NonOrientedGraph<T> firstGraph, NonOrientedGraph<T> secondGraph)
+    {
+        return firstGraph.GetNodesCount() < secondGraph.GetNodesCount();
+    }
+    
+    public static bool operator >(NonOrientedGraph<T> firstGraph, NonOrientedGraph<T> secondGraph)
+    {
+        return !(firstGraph < secondGraph);
+    }
+
+    public static bool operator <=(NonOrientedGraph<T> firstGraph, NonOrientedGraph<T> secondGraph)
+    {
+        return firstGraph.GetNodesCount() <= secondGraph.GetNodesCount();
+    }
+
+    public static bool operator >=(NonOrientedGraph<T> firstGraph, NonOrientedGraph<T> secondGraph)
+    {
+        return firstGraph.GetNodesCount() >= secondGraph.GetNodesCount();
+    }
+
+    public int CompareTo(NonOrientedGraph<T>? other)
+    {
+        if (Nodes.Count > other.Nodes.Count) return -1;
+        if (Nodes.Count < other.Nodes.Count) return 1;
+        return 0;
+    }
+
+    public override string ToString()
+    {
+        string result = "";
+        foreach (Edge<T> edge in Edges)
+        {
+            result += edge.ToString() + ", ";
+        }
+
+        return result;
     }
 }
