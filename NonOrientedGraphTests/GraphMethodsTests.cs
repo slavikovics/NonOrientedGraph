@@ -36,8 +36,6 @@ public sealed class GraphMethodsTests
     public void HasEdgeTest()
     {
         NonOrientedGraph<int> graph = new NonOrientedGraph<int>();
-        Node<int> node1 = new Node<int>(1);
-        Node<int> node2 = new Node<int>(2);
         graph.AddNode(1);
         graph.AddNode(2);
         graph.AddNode(2);
@@ -217,5 +215,30 @@ public sealed class GraphMethodsTests
         Assert.AreEqual(nodes.Count, 2);
         Assert.IsTrue(nodes.Contains(new Node<int>(1)));
         Assert.IsTrue(nodes.Contains(new Node<int>(2)));
+    }
+
+    [TestMethod]
+    public void FindIncidentEdgesTest()
+    {
+        NonOrientedGraph<int> graph = new NonOrientedGraph<int>();
+        
+        graph.AddEdge(0, 1);
+        graph.AddEdge(2, 0);
+        graph.AddEdge(1, 3);
+
+        List<Edge<int>> edges = graph.FindIncidentEdges(0);
+        Assert.AreEqual(edges.Count, 2);
+        Assert.IsTrue(edges.Contains(new Edge<int>(0, 1)));
+        Assert.IsTrue(edges.Contains(new Edge<int>(0, 2)));
+    }
+
+    [TestMethod]
+    public void ToStringTest()
+    {
+        NonOrientedGraph<int> graph = new NonOrientedGraph<int>();
+        
+        graph.AddEdge(0, 1);
+        
+        Assert.AreEqual(graph.ToString(), "0 = 1, ");
     }
 }

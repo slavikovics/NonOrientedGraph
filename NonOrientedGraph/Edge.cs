@@ -22,7 +22,7 @@ public class Edge<T>
 
     public override string ToString()
     {
-        return $"{FirstNode} = {SecondNode}";
+        return $"{FirstNode.Value?.ToString()} = {SecondNode.Value?.ToString()}";
     }
 
     public override bool Equals(object? obj)

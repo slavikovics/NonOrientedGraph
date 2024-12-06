@@ -259,8 +259,8 @@ public class NonOrientedGraph<T> : IComparable<NonOrientedGraph<T>> where T : IE
 
     public int CompareTo(NonOrientedGraph<T>? other)
     {
-        if (Nodes.Count > other.Nodes.Count) return -1;
-        if (Nodes.Count < other.Nodes.Count) return 1;
+        if (Nodes.Count > other.Nodes.Count) return 1;
+        if (Nodes.Count < other.Nodes.Count) return -1;
         return 0;
     }
 
